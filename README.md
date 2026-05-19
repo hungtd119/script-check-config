@@ -88,9 +88,6 @@ Kết quả: 9/14 PASS   |   5/14 FAIL
 | 13 | startTime = appearTime | `startTime` phải bằng `appearTime`, `endTime` phải bằng `disappearTime` |
 | 14 | Quỹ tháng cố định | `activityId ∈ {5013..5025}`: thời gian phải đúng theo từng tháng trong năm, kèm các field cố định |
 
-> Tài liệu chi tiết từng rule: [checklist.md](checklist.md)  
-> Tài liệu cấu trúc file config: [activityopen.md](activityopen.md)
-
 ---
 
 ## Cấu trúc project
@@ -100,7 +97,4 @@ script-check-config/
 ├── main.go             # Logic validate (14 rules)
 ├── go.mod
 ├── activityopen.csv    # File config cần validate
-├── checklist.csv       # Định nghĩa 14 rules
-├── activityopen.md     # Mô tả cấu trúc activityopen.csv
-└── checklist.md        # Mô tả chi tiết từng rule
 ```
