@@ -372,7 +372,7 @@ func runAllRules(rows []ActivityRow) []RuleResult {
 		rule8(rows),
 		rule9(rows),
 		rule10(rows),
-		rule11(rows),
+		// rule11(rows),
 		rule12(rows),
 		rule13(rows),
 		rule14(rows),
