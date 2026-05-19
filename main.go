@@ -68,6 +68,27 @@ type RuleResult struct {
 
 // ─── Entry point ──────────────────────────────────────────────────────────────
 
+var availableRules = []struct {
+	id   int
+	name string
+	fn   func([]ActivityRow) RuleResult
+}{
+	{1, "Ô trống có dấu cách", rule1},
+	{2, "Trùng ID", rule2},
+	{3, "Khoảng serverID không chính xác", rule3},
+	{4, "Binh Pháp Nghiên Tập – chồng thời gian (±7 ngày)", rule4},
+	{5, "Binh Pháp Nghiên Tập – yêu cầu field", rule5},
+	{6, "Tướng UR – chồng thời gian (±7 ngày)", rule6},
+	{7, "Tướng UR – yêu cầu field", rule7},
+	{8, "Vũ Khí Chuyên Dụng – chồng thời gian (±7 ngày)", rule8},
+	{9, "Vũ Khí Chuyên Dụng – yêu cầu field", rule9},
+	{10, "serverLimit khi startTimeType=1", rule10},
+	{11, "Format datetime khi startTimeType=1", rule11},
+	{12, "Sự kiện song hành phải cùng thời gian", rule12},
+	{13, "startTime=appearTime & endTime=disappearTime", rule13},
+	{14, "Quỹ tháng cố định (5013–5025)", rule14},
+}
+
 func main() {
 	path := "activityopen.csv"
 	if len(os.Args) > 1 {
@@ -80,7 +101,35 @@ func main() {
 		os.Exit(1)
 	}
 
-	results := runAllRules(rows)
+	fmt.Println(colorBold + "CHỌN RULE MUỐN CHẠY:" + colorReset)
+	fmt.Println("0. Chạy tất cả rule")
+	for _, r := range availableRules {
+		fmt.Printf("%d. %s\n", r.id, r.name)
+	}
+	fmt.Print(colorYellow + "Lựa chọn của bạn (nhập số): " + colorReset)
+
+	var input string
+	fmt.Scanln(&input)
+	choice, _ := strconv.Atoi(input)
+
+	var results []RuleResult
+	if choice == 0 {
+		results = runAllRules(rows)
+	} else {
+		found := false
+		for _, r := range availableRules {
+			if r.id == choice {
+				results = append(results, r.fn(rows))
+				found = true
+				break
+			}
+		}
+		if !found {
+			fmt.Println(colorRed + "Lựa chọn không hợp lệ. Đang chạy tất cả rule mặc định..." + colorReset)
+			results = runAllRules(rows)
+		}
+	}
+
 	printReport(path, results, warnings)
 }
 
